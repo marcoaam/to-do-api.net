@@ -34,13 +34,21 @@ namespace ToDoList.Api.Unit.Tests.Controllers
         }
 
         [Test]
+        public void Status_ShouldBeDecoratedWithHttpGetAttributeWithStatusRoute()
+        {
+            var method = typeof(DocumentationController).GetMethod("Status");
+
+            method.Should().BeDecoratedWith<HttpGetAttribute>(httpGetAttribute => httpGetAttribute.Template == "status");
+        }
+
+        [Test]
         public void Status_ShouldReturn200Response()
         {
             var documentationController = _documentationController;
 
-            var result = documentationController.Status() as OkObjectResult;
+            var result = documentationController.Status() as JsonResult;
 
-            result.Should().NotBeNull();
+            result.Value.Should().NotBeNull();
             result.StatusCode.Should().Be(200);
         }
 
@@ -49,10 +57,10 @@ namespace ToDoList.Api.Unit.Tests.Controllers
         {
             _mockVersionProvider.Setup(x => x.GetVersion()).Returns("fakeVersion");
 
-            var result = _documentationController.Status() as OkObjectResult;
+            var result = _documentationController.Status() as JsonResult;
 
             result.Should().NotBeNull();
-            result.Value.ToString().Should().Be("fakeVersion");
+            result.Value.ToString().Should().Contain("fakeVersion");
         }
     }
 }

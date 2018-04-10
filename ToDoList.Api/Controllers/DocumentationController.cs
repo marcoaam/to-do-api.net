@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Net;
+using Microsoft.AspNetCore.Mvc;
 using ToDoList.Api.Providers;
 
 namespace ToDoList.Api.Controllers
@@ -16,7 +17,10 @@ namespace ToDoList.Api.Controllers
         [HttpGet("status")]
         public IActionResult Status()
         {
-            return Ok(_versionProvider.GetVersion());
+            var statusResponse = Json(new { version = _versionProvider.GetVersion()});
+            statusResponse.StatusCode = 200;
+
+            return statusResponse;
         }
     }
 }

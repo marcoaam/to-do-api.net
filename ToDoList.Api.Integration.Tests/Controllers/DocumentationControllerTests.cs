@@ -2,6 +2,7 @@ using System.Threading.Tasks;
 using FluentAssertions;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.TestHost;
+using Newtonsoft.Json.Linq;
 using NUnit.Framework;
 
 namespace ToDoList.Api.Integration.Tests.Controllers
@@ -16,10 +17,10 @@ namespace ToDoList.Api.Integration.Tests.Controllers
             var client = server.CreateClient();
 
             var response = await client.GetAsync("/api/status");
-
             var responseContent = await response.Content.ReadAsStringAsync();
+            var version = JObject.Parse(responseContent)["version"].ToString();
 
-            responseContent.Should().MatchRegex(@"^\d+\.\d+\.\d+(\.\d+)?$");
+            version.Should().MatchRegex(@"^\d+\.\d+\.\d+(\.\d+)?$");
         }
     }
 }
