@@ -13,6 +13,7 @@ namespace ToDoList.Api.Controllers
             _versionProvider = versionProvider;
         }
 
+        [HttpGet("status")]
         public IActionResult Status()
         {
             return Ok(_versionProvider.GetVersion());
