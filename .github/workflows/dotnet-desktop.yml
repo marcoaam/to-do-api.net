@@ -2,7 +2,7 @@ name: CI
 on: push
 jobs:
   prod-check:
-    if: ${{ github.ref == github.event.repository.default_branch }}
+    if: always()
     runs-on: ubuntu-latest
     steps:
-      - run: echo "Deploying to production server on branch $default_branch"
+      - run: echo "Deploying to production server on branch $github.event.repository.default_branch"
